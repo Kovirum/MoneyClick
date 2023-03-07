@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     private int _money;
+    private int _totalMoney;
     private int _addition;
 
     public Text MoneyCounter;
@@ -18,9 +19,12 @@ public class MainMenu : MonoBehaviour
     private int _clickRateCount = 0;
     private float _elapsedTime = 0f;
 
+    public AudioSource ButtonClickSound;
+
     public void Start()
     {
         _money = PlayerPrefs.GetInt("money", 0);
+        _totalMoney = PlayerPrefs.GetInt("totalMoney", 0);
         _addition = PlayerPrefs.GetInt("Addition", 1);
         MoneyCounter.text = _money.ToString();
     }
@@ -45,13 +49,17 @@ public class MainMenu : MonoBehaviour
     public void MoneyClickUp()
     {
         _money += _addition;
+        _totalMoney += _addition;
         _clickRateCount += _addition;
         MoneyCounter.text = _money.ToString();
         PlayerPrefs.SetInt("money", _money);
+        PlayerPrefs.SetInt("totalMoney", _totalMoney);
         PlayerPrefs.Save();
         Instantiate(EffectClick, ButtonMoney.GetComponent<RectTransform>().position.normalized, Quaternion.identity);
 
         ButtonMoney.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+
+        ButtonClickSound.Play();
     }
 
     public void MoneyClickDown()

@@ -22,7 +22,7 @@ public class Achievements : MonoBehaviour
 
     private void Start()
     {
-        _money = PlayerPrefs.GetInt("money");
+        _money = PlayerPrefs.GetInt("totalMoney");
         for (byte i = 0; i < QuanityAchievement; i++)
         {
 
