@@ -20,6 +20,11 @@ public class MainMenu : MonoBehaviour
     private float _elapsedTime = 0f;
 
     public AudioSource ButtonClickSound;
+    public AudioSource BGMusic;
+    private string _musicStatus;
+    public Image MusicButtonImage;
+    public Sprite MusicEnabled;
+    public Sprite MusicDisabled;
 
     public void Start()
     {
@@ -27,6 +32,9 @@ public class MainMenu : MonoBehaviour
         _totalMoney = PlayerPrefs.GetInt("totalMoney", 0);
         _addition = PlayerPrefs.GetInt("Addition", 1);
         MoneyCounter.text = _money.ToString();
+        _musicStatus = PlayerPrefs.GetString("musicStatus", "off");
+        BGMusic = GameObject.Find("BackgroundMusic").GetComponent<AudioSource>();
+        CheckMusicStatus();
     }
 
     private void Update()
@@ -34,7 +42,7 @@ public class MainMenu : MonoBehaviour
         _elapsedTime += Time.deltaTime;
         if (_elapsedTime >= 1f)
         {
-            ClickRateText.text = "Кликов в секунду: " + Mathf.Round(_clickRateCount / _elapsedTime).ToString();
+            ClickRateText.text = "Кликов в секунду: " + (_clickRateCount / _elapsedTime).ToString("0.##");
             _elapsedTime = 0f;
             _clickRateCount = 0;
         }
@@ -88,6 +96,43 @@ public class MainMenu : MonoBehaviour
         _addition = 1;
         MoneyCounter.text = _money.ToString();
 
+    }
+
+    public void ManageMusic()
+    {
+        if(_musicStatus == "on")
+        {
+            _musicStatus = "off";
+            MusicButtonImage.sprite = MusicDisabled;
+            BGMusic.volume = 0f;
+            ButtonClickSound.volume = 0f;
+            PlayerPrefs.SetString("musicStatus", "off");
+            PlayerPrefs.Save();
+        } else
+        {
+            _musicStatus = "on";
+            MusicButtonImage.sprite = MusicEnabled;
+            BGMusic.volume = 0.4f;
+            ButtonClickSound.volume = 0.2f;
+            PlayerPrefs.SetString("musicStatus", "on");
+            PlayerPrefs.Save();
+        }
+    }
+
+    private void CheckMusicStatus()
+    {
+        if (_musicStatus == "on")
+        {
+            MusicButtonImage.sprite = MusicEnabled;
+            BGMusic.volume = 0.4f;
+            ButtonClickSound.volume = 0.2f;
+        }
+        else
+        {
+            MusicButtonImage.sprite = MusicDisabled;
+            BGMusic.volume = 0f;
+            ButtonClickSound.volume = 0f;
+        }
     }
 }
 

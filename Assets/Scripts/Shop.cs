@@ -11,6 +11,7 @@ public class Shop : MonoBehaviour
     public Button[] Product = new Button[QuanityProduct];
     public Text[] TextProduct = new Text[QuanityProduct];
     public Text AdditionText;
+    public Text BalanceText;
     public int[] PriceProduct = new int[QuanityProduct];
     public int[] AdditionProduct = new int[QuanityProduct];
     private int[] _statusProduct = new int[QuanityProduct];
@@ -23,6 +24,7 @@ public class Shop : MonoBehaviour
         _money = PlayerPrefs.GetInt("money", 0);
         _addition = PlayerPrefs.GetInt("Addition", 1);
         AdditionText.text = "Доход за клик: " + _addition.ToString();
+        BalanceText.text = "Баланс: " + _money.ToString();
         StatusProductUpdate();
     }
     public void ClickButtonProduct(int _numberButton)
@@ -43,6 +45,7 @@ public class Shop : MonoBehaviour
         _addition += AdditionProduct[_numberButton];
         _statusProduct[_numberButton] = 1;
         AdditionText.text = "Доход за клик: " + _addition.ToString();
+        BalanceText.text = "Баланс: " + _money.ToString();
 
         PlayerPrefs.SetInt("Addition", _addition);
         PlayerPrefs.SetInt($"StatusProduct{_numberButton}", _statusProduct[_numberButton]);
